@@ -1,0 +1,63 @@
+.none {
+    display: none;
+}
+
+.bookInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    position: relative;
+}
+
+.booktitle {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin: 10px;
+}
+
+.listauthorsbook {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    padding: 0;
+    width: 100%;
+}
+
+.authorsbook {
+    list-style: none;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 3px;
+}
+
+.closeIcon {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    width: 30px;
+    height: auto;
+}
+
+.addlibrary {
+    position: absolute;
+    display: flex;
+    top: 0px;
+    left: 10px;
+    height: auto;
+}
+
+.addwishlist {
+        position: absolute;
+        display: flex;
+        top: 30px;
+        left: 10px;
+        height: auto;
+}
+
+.addIcon {
+    width: 25px;
+    height: auto;
+}
