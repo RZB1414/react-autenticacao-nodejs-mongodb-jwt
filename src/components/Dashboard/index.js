@@ -7,9 +7,12 @@ import { ReactComponent as LibraryIcon } from '../../assets/icons/library-icon.s
 import { ReactComponent as WishListIcon } from '../../assets/icons/wishlist-icon.svg'
 import Library from '../Library';
 import WishList from '../WishList'
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const id = localStorage.getItem('id')
+
+    const navigate = useNavigate()
 
     const [search, setSearch] = useState(true)
     const [library, setLibrary] = useState(false)
@@ -45,7 +48,6 @@ const Dashboard = () => {
         setLibrary(true)
         setSearch(false)
         setWishlist(false)
-        setRefresh(!refresh)
     }
 
     function handleWishlist() {
@@ -54,8 +56,18 @@ const Dashboard = () => {
         setLibrary(false)
     }
 
+    function handleRefresh() {
+        setRefresh(!refresh)
+    }
+
+    function handleLogout() {
+        localStorage.clear()
+        navigate('/')
+    }
+
     return (
         <>
+            <button className='logout' onClick={handleLogout}>Logout</button>
             <div className='icons'>
                 <SearchIcon className='searchIcon' onClick={handleSearch} />
                 <LibraryIcon className='libraryIcon' onClick={handleLibrary} />
@@ -65,8 +77,8 @@ const Dashboard = () => {
                 <p>Welcome to your personal library</p>
             </div>
 
-            <SearchBooks setHidden={search}/>
-            <Library setHidden={library} refresh={refresh}/>
+            <SearchBooks setHidden={search} setRefresh={handleRefresh}/>
+            <Library setHidden={library} refresh={refresh} setRefresh={handleRefresh}/>
             <WishList setHidden={wishlist}/>
         </>
 

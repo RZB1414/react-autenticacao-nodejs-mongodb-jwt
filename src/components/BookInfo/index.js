@@ -2,12 +2,12 @@ import './BookInfo.css'
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-x-icon.svg'
 import { ReactComponent as AddIcon } from '../../assets/icons/add-circle-icon.svg'
 import { addBook } from '../../services/books'
+import { useEffect } from 'react'
 
-const BookInfo = ({ setSelectedBook, book, isClicked }) => {
+const BookInfo = ({ setSelectedBook, book, isClicked, setRefresh }) => {
 
     const id = localStorage.getItem('id')
     
-
     const selectedBook ={
         id: book.id,
         imgUrl: book.volumeInfo.imageLinks.thumbnail,
@@ -18,6 +18,10 @@ const BookInfo = ({ setSelectedBook, book, isClicked }) => {
         pageCount: book.volumeInfo.pageCount,
         users: id
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     function handleClick() {
         isClicked(false)
@@ -32,6 +36,7 @@ const BookInfo = ({ setSelectedBook, book, isClicked }) => {
         try {            
             await addBook(selectedBook).then(() => {
                 isClicked(false)
+                setRefresh()
             })   
         } catch (error) {
             console.error('Error adding book to library:', error)

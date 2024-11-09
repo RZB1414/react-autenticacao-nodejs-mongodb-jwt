@@ -2,7 +2,7 @@ import './SearchBooks.css'
 import { useEffect, useState } from 'react'
 import BookInfo from '../BookInfo'
 
-const SearchBooks = ({ setHidden }) => {
+const SearchBooks = ({ setHidden, setRefresh }) => {
 
     const [search, setSearch] = useState('')
     const [data, setData] = useState([])
@@ -76,7 +76,7 @@ const SearchBooks = ({ setHidden }) => {
                     }) : <p></p>}
                 </ul>
             </div>
-            {selectedbook && <BookInfo setSelectedBook={setSelectedBook} book={selectedbook} isClicked={setIsClicked} />}
+            {selectedbook && <BookInfo setSelectedBook={setSelectedBook} book={selectedbook} isClicked={setIsClicked} setRefresh={setRefresh}/>}
         </div>
     )
 }

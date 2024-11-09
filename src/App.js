@@ -3,10 +3,10 @@ import './App.css';
 import Header from './components/Header';
 import Login from './components/Login';
 import Logon from './components/Logon';
-import SearchAllUsers from './components/SearchAllUsers';
 import SearchUserName from './components/SearchUserName';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
+import BookInfoLibrary from './components/BookInfoLibrary';
 
 function App() {
   return (
@@ -18,8 +18,8 @@ function App() {
           <Route path="/auth/dashboard" element={<Dashboard />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path='/auth/register' element={<Logon />} />
-          <Route path='/auth/users' element={<SearchAllUsers />} />
           <Route path='/auth/user/:id' element={<SearchUserName />} />
+          <Route path='/auth/libraryBook' element={<BookInfoLibrary />} />
         </Routes>
       </div>
     </BrowserRouter>
