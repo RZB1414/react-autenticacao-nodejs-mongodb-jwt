@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const booksAPI = axios.create({ baseURL: 'http://localhost:3000/' })
+// const booksAPI = axios.create({ baseURL: 'http://localhost:3000/' })
+const booksAPI = axios.create({ baseURL: 'https://autenticacao-nodejs-mongodb-jwt.vercel.app/' })
 
 async function getBooks() {
     try {
