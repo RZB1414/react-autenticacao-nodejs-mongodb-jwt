@@ -44,3 +44,35 @@
     width: 30px;
     height: auto;
 }
+
+.uploadIcon {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 30px;
+    height: auto;
+}
+
+.fileUploadedIcon {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 30px;
+    height: auto;
+}
+
+.downloadFileIcon {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    width: 30px;
+    height: auto;
+}
+
+.downloadstatus {
+    position: absolute;
+    top: 50px;
+    right: 70px;
+    width: 30px;
+    height: auto;
+}

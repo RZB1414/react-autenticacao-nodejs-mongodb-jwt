@@ -11,6 +11,7 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
     const [selectedBook, setSelectedBook] = useState(null)
     const [isClicked, setIsClicked] = useState(false)
 
+
     useEffect(() => {
         const fetchBooks = async () => {
             const books = await getBooks()
@@ -42,7 +43,12 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
                         }) : <p>No books in your library</p>}
                     </ul>
                 </div>
-                {selectedBook && <BookInfoLibrary selectedBook={selectedBook} setSelectedBook={setSelectedBook} isClicked={setIsClicked} setRefresh={setRefresh} />}
+                {selectedBook && <BookInfoLibrary 
+                                    selectedBook={selectedBook} 
+                                    setSelectedBook={setSelectedBook} 
+                                    isClicked={setIsClicked} 
+                                    setRefresh={setRefresh} 
+                                    />}
             </div>
     )
 }

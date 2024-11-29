@@ -1,0 +1,52 @@
+.none {
+    display: none;
+}
+
+.fileUpload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: auto;
+    padding: 20px;
+    border: 2px dashed #c3c3c3;
+    background-color: aliceblue;
+    opacity: 0.95;
+    position: absolute;
+    top:0%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.fileupload-closeIcon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: auto;
+}
+
+.fileupload-title {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 10;
+}
+
+.fileupload-label {
+    display: flex;
+    justify-content: center;
+}
+
+.fileupload-uploadIcon {
+    width: 15%;
+    height: auto;
+}
+
+.fileupload-button {
+    background-color: burlywood;
+}
+
+.fileuload-onchange {
+    
+}
