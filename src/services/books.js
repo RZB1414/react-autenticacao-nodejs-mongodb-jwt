@@ -1,7 +1,7 @@
 import axios from "axios"
 
-// const booksAPI = axios.create({ baseURL: 'http://localhost:3000/' })
-const booksAPI = axios.create({ baseURL: 'https://autenticacao-nodejs-mongodb-jwt.vercel.app/' })
+//const booksAPI = axios.create({ baseURL: 'http://localhost:3000/' })
+const booksAPI = axios.create({ baseURL: 'https://buiatti-books-c3346d1487f9.herokuapp.com/' })
 
 async function getBooks() {
     try {
