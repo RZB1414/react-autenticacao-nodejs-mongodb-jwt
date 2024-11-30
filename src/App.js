@@ -7,13 +7,11 @@ import SearchUserName from './components/SearchUserName';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import BookInfoLibrary from './components/BookInfoLibrary';
-import img from './assets/icons/background-3.jpeg';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <img src={img} alt='background' className='app-img' />
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

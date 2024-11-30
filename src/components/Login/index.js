@@ -1,6 +1,7 @@
 import './Login.css'
 import { login } from '../../services/users.js'
 import { useNavigate } from 'react-router-dom'
+import img from '../../assets/icons/backgrond.jpeg'
 
 const LogIn = () => {
 
@@ -32,6 +33,7 @@ const LogIn = () => {
                 <input className='input' type="password" placeholder="Password" />
                 <button className='input-button' type="submit">Log in</button>
             </form>
+            <img src={img} alt='background' className='home-img' />
         </div>
     )
 }
