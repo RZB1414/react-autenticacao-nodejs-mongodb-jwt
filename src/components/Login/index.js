@@ -30,7 +30,7 @@ const LogIn = () => {
             <form className='form' onSubmit={handleSubmit}>
                 <input className='input' type="email" placeholder="Email" />
                 <input className='input' type="password" placeholder="Password" />
-                <button type="submit">Log in</button>
+                <button className='input-button' type="submit">Log in</button>
             </form>
         </div>
     )

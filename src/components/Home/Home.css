@@ -3,20 +3,20 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f5f5f5;
+    background-color: rgb(255, 250, 243);
 }
 
 .buttons {
     display: flex;
     justify-content: right;
-    margin: 5px;
+    background-color: rgb(255, 250, 243);
 }
 
 .button {
     width: 20%;
     margin: 10px, 0, 0, 0;
     padding: 0;
-    background-color: white;
+    background-color: rgb(255, 250, 243);
     border: none;
 }
 
@@ -29,6 +29,11 @@
 }
 
 .home-img {
+    position: absolute; /* or fixed, depending on your layout */
+    z-index: -1; /* Ensure it is under all other components */
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: auto;  
+    height: 78%;
+    object-fit: cover; /* Ensure the image covers the entire area */
 }

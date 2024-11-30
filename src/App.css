@@ -1,3 +1,14 @@
 .App {
   
 }
+
+.app-img {
+    position: absolute; /* or fixed, depending on your layout */
+    z-index: -1; /* Ensure it is under all other components */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    object-fit: cover; /* Ensure the image covers the entire area */
+    opacity: 1; /* Adjust the opacity to your liking */
+}
