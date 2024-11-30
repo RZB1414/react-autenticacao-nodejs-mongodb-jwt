@@ -54,6 +54,7 @@ const SearchBooks = ({ setHidden, setRefresh }) => {
     return (
         <div className={setHidden ? 'div' : 'none'}>
             <div className='searchBooks'>
+                <h1 className='searchBooks-title'>Search for a book</h1>
                 <input className='searchBooksInput'
                     type='text'
                     placeholder='Choose your next adventure...'

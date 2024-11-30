@@ -8,7 +8,11 @@
     align-items: center;
     width: 80%;
     flex-direction: column;
-    margin-top: 10px;
+}
+
+.searchBooks-title {
+    font-weight: 500;
+    margin: 10px;
 }
 
 .searchBooksInput{
