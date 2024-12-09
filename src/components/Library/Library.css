@@ -24,6 +24,7 @@
     flex-wrap: wrap;
     width: 85%;
     background-color: #f5f5f5;
+    margin-top: 15px;
     padding: 10px;
     list-style: none;
     justify-content: space-around;
@@ -35,4 +36,36 @@
     margin: 10px;
     background-color: #fff;
     border-radius: 10px;
+}
+
+.div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.library-options {
+    display: flex;
+    padding: 20px;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.booksIcon {
+    width: 50px;
+    height: auto;
+    padding: 10px;
+}
+
+.filesIcon {
+    width: 50px;
+    height: auto;
+    padding: 10px;
+}
+
+.active {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    transition: 0.3s;
 }

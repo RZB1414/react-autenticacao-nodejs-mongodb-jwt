@@ -1,7 +1,11 @@
 import './Library.css';
 import { getBooks } from '../../services/books.js'
-import { useState, useEffect } from 'react';
-import BookInfoLibrary from '../BookInfoLibrary/index.js';
+import { getAllFiles } from '../../services/files.js'
+import { useState, useEffect } from 'react'
+import BookInfoLibrary from '../BookInfoLibrary/index.js'
+import { ReactComponent as Files } from '../../assets/icons/files-icon.svg'
+import { ReactComponent as Books } from '../../assets/icons/book-icon.svg'
+import FilesLibrary from '../FilesLibrary/index.js'
 
 const Library = ({ setHidden, refresh, setRefresh }) => {
 
@@ -10,6 +14,10 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
     const [books, setBooks] = useState([])
     const [selectedBook, setSelectedBook] = useState(null)
     const [isClicked, setIsClicked] = useState(false)
+    const [isClickedFiles, setIsClickedFiles] = useState(false)
+    const [activeIcon, setActiveIcon] = useState('books')
+    const [filesRefresh, setFilesRefresh] = useState(false)
+    const [filesSaved, setFilesSaved] = useState([])
 
 
     useEffect(() => {
@@ -21,17 +29,49 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
         fetchBooks()
     }, [refresh, id])
 
+    async function allFiles() {
+        try {
+            const response = await getAllFiles()
+            setFilesSaved(response)
+            console.log(response);
+            
+        } catch (error) {
+            console.error(`Erro servidor => ${error.response ? error.response.data : error.message}`)
+            throw error
+        }
+    }
+
+    useEffect(() => {
+        allFiles()
+    }, [filesRefresh])
+
     function handleClick(book) {
         setSelectedBook(book)
         setIsClicked(true)
     }
 
+    function handleFiles() {
+        setIsClickedFiles(true)
+        setActiveIcon('files')
+    }
+
+    function handleBooks() {
+        setIsClickedFiles(false)
+        setActiveIcon('books')
+    }
+
+    function handleFilesRefresh() {
+        setFilesRefresh(!filesRefresh)
+    }
+
     return (
             <div className={setHidden ? 'library' : 'none'}>
                 <div className={isClicked ? 'none' : 'div'}>
-
-                    <h1 className='libraryTitle'>Library</h1>
-                    <ul className='libraryList'>
+                    <div className='library-options'>
+                    <Books className={`booksIcon ${activeIcon === 'books' ? 'active' : ''}`} onClick={handleBooks} />
+                    <Files className={`filesIcon ${activeIcon === 'files' ? 'active' : ''}`} onClick={handleFiles} />
+                    </div>
+                    <ul className={isClickedFiles ? 'none' : 'libraryList'}>
                         {books && books.length > 0 ? books.map((book) => {
                             return (
                                 <li className='libraryListItem'
@@ -42,6 +82,7 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
                             )
                         }) : <p>No books in your library</p>}
                     </ul>
+                    {isClickedFiles ? <FilesLibrary filesSaved={filesSaved} filesRefresh={filesRefresh} handleFilesRefresh={handleFilesRefresh} /> : null}
                 </div>
                 {selectedBook && <BookInfoLibrary 
                                     selectedBook={selectedBook} 
