@@ -38,7 +38,7 @@ const ShowPdfFile = (fileId) => {
                 URL.revokeObjectURL(pdfUrl);
             }
         };
-    }, [fileId.id]);
+    }, [fileId]);
 
     if (error) {
         return <div>Error: {error}</div>;

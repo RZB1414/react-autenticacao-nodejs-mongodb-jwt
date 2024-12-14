@@ -32,6 +32,10 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
     async function allFiles() {
         try {
             const response = await getAllFiles()
+            if(response.length === 0) {
+                setFilesSaved([])
+                return
+            }
             setFilesSaved(response)
             console.log(response);
             

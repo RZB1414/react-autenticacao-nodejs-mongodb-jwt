@@ -1,6 +1,7 @@
 import axios from "axios"
 
 const filesAPI = axios.create({ baseURL: 'https://buiatti-books-c3346d1487f9.herokuapp.com/' })
+//const filesAPI = axios.create({ baseURL: 'http://localhost:3000' })
 
 async function uploadFile(formData) {
     try {
@@ -32,17 +33,14 @@ async function getAllFiles() {
 }
 
 async function showFile (id) {
-    try {
-        console.log('service ID', id);
-        
+    try {        
         const response = await filesAPI.get(`/auth/showFile/${id}`, {
             responseType: 'blob',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-        console.log(response);
-        
+                
         return response
     } catch (error) {
         console.error(`Erro servidor => ${error.response ? JSON.stringify(error.response.data) : (error.message)}`);
