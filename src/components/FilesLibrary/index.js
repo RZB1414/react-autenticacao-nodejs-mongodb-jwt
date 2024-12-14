@@ -24,7 +24,7 @@ const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
 
     useEffect(() => {
         setAllMarkers([...new Set(filesSaved.map(file => file.metadata))])
-    }, [filesSaved])
+    }, [filesSaved, filesRefresh])
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0])
