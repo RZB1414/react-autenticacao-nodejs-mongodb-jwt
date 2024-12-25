@@ -4,11 +4,11 @@ import { ReactComponent as AddIcon } from '../../assets/icons/add-circle-icon.sv
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-x-icon.svg'
 import { ReactComponent as ClosePdfIcon } from '../../assets/icons/close-x-icon.svg'
 import { ReactComponent as CloseMarkerIcon } from '../../assets/icons/close-x-icon.svg'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { uploadFile } from '../../services/files'
 import ShowPdfFile from '../ShowPdfFile'
 
-const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
+const FilesLibrary = ({ filesSaved, handleFilesRefresh, allMarkers }) => {
 
     const [selectedFile, setSelectedFile] = useState(null)
     const [fileName, setFileName] = useState('')
@@ -18,13 +18,8 @@ const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
     const [uploadStatus, setUploadStatus] = useState('')
     const [isPdfClicked, setIsPdfClicked] = useState(false)
     const [selectedPdf, setSelectedPdf] = useState(null)
-    const [allMarkers, setAllMarkers] = useState([])
-    const [selectedMarker, setSelectedMarker] = useState('')
     const [isCreatingNewMarker, setIsCreatingNewMarker] = useState(false)
-
-    useEffect(() => {
-        setAllMarkers([...new Set(filesSaved.map(file => file.metadata))])
-    }, [filesSaved, filesRefresh])
+    
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0])
@@ -41,6 +36,7 @@ const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
 
     const handleAddFile = () => {
         setIsAddingFile(true)
+
     }
 
     const handleCloseIcon = () => {
@@ -63,10 +59,10 @@ const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
     const handleSelectMarkerChange = (e) => {
         if (e.target.value === 'new') {
             setIsCreatingNewMarker(true)
-            setSelectedMarker('')
+            setMarker('')
         } else {
             setIsCreatingNewMarker(false)
-            setSelectedMarker(e.target.value)
+            setMarker(e.target.value)
         }
     }
 
@@ -86,17 +82,23 @@ const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
             return
         }
 
+        if (!marker) {
+            setUploadStatus('Please select or create a marker');
+            return;
+        }
+
         const formData = new FormData()
         formData.append('textFile', selectedFile)
         formData.append('fileName', fileName)
-        formData.append('marker', marker)
+        formData.append('marker', marker)        
 
         try {
             setUploadStatus('Uploading file')
             const response = await uploadFile(formData)
+            console.log('reposta', response);
+            
             setUploadStatus('File uploaded')
-            handleFilesRefresh(!filesRefresh)
-            console.log(response)
+            handleFilesRefresh()
             setTimeout(() => {
                 handleCloseIcon()
             }, 2000)
@@ -126,17 +128,18 @@ const FilesLibrary = ({ filesSaved, filesRefresh, handleFilesRefresh }) => {
                     />
                     <select
                     className='filesLibrary-selectMarker'
-                    value={selectedMarker}
+                    value={marker}
                     onChange={handleSelectMarkerChange}
                     >
                         <option 
                         className='optionBox'
                         value=''>Select a marker</option>
-                        {allMarkers.map((marker, index) => (
+                        {allMarkers.map((markerItem, index) => (
                             <option 
                             className='optionBox-item'
-                            key={index} value={marker}>
-                                {marker}
+                            key={index} 
+                            value={markerItem}>
+                                {markerItem}
                             </option>
                         ))}
                         <option value='new'>Create new marker</option>
