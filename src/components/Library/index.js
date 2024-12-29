@@ -32,16 +32,17 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
 
     async function allFiles() {
         try {
-            const response = await getAllFiles()
-            if (!Array.isArray(response) || response.length === 0 ) {
+            const responseAll = await getAllFiles()
+            if (!Array.isArray(responseAll) || responseAll.length === 0 ) {
                 console.log('No files saved');
                 return
             }
+            const response = responseAll.filter(file => file.metadata.userId.includes(id))
             setFilesSaved(response)
             console.log(response);
             
 
-            const uniqueMarkers = [...new Set(response.map(file => file.metadata))]
+            const uniqueMarkers = [...new Set(response.map(file => file.metadata.marker))]
             setAllMarkers(uniqueMarkers)
         } catch (error) {
             console.error(`Erro servidor => ${error.response ? error.response.data : error.message}`)

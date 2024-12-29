@@ -21,6 +21,8 @@ const FilesLibrary = ({ filesSaved, handleFilesRefresh, allMarkers }) => {
     const [isCreatingNewMarker, setIsCreatingNewMarker] = useState(false)
     
 
+    const id = localStorage.getItem('id')
+
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0])
         setUploadStatus('')
@@ -90,7 +92,8 @@ const FilesLibrary = ({ filesSaved, handleFilesRefresh, allMarkers }) => {
         const formData = new FormData()
         formData.append('textFile', selectedFile)
         formData.append('fileName', fileName)
-        formData.append('marker', marker)        
+        formData.append('marker', marker)
+        formData.append('userId', id)    
 
         try {
             setUploadStatus('Uploading file')
@@ -188,7 +191,7 @@ const FilesLibrary = ({ filesSaved, handleFilesRefresh, allMarkers }) => {
                 <div className={isMarkerClicked ? 'showfiles' : 'none'}>
                     <CloseMarkerIcon className='filesLibrary-markerCloseIcon' onClick={handleMarkerCloseIcon} />
                     <ul className='showfiles-list'>
-                        {filesSaved.filter(file => file.metadata === marker).map((file, index) => (
+                        {filesSaved.filter(file => file.metadata.marker === marker).map((file, index) => (
                             <li
                                 key={index}
                                 className='showfiles-list-item'
