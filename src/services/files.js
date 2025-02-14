@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const filesAPI = axios.create({ baseURL: 'https://buiatti-books-c3346d1487f9.herokuapp.com/' })
+const filesAPI = axios.create({ baseURL: 'https://midia-api-rzb1414s-projects.vercel.app' })
 //const filesAPI = axios.create({ baseURL: 'http://localhost:3000' })
 
 async function uploadFile(formData) {

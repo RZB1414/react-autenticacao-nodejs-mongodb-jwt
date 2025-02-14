@@ -1,5 +1,5 @@
 import './SearchBooks.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BookInfo from '../BookInfo'
 
 const SearchBooks = ({ setHidden, setRefresh }) => {
@@ -8,21 +8,11 @@ const SearchBooks = ({ setHidden, setRefresh }) => {
     const [data, setData] = useState([])
     const [selectedbook, setSelectedBook] = useState(null)
     const [isClicked, setIsClicked] = useState(false)
-    const [debouncedSearch, setDebouncedSearch] = useState(search)
-
-    useEffect(() => {
-        const timerId = setTimeout(() => {
-            setDebouncedSearch(search)
-        }, 500)
-
-        return () => {
-            clearTimeout(timerId)
-        }
-    }, [search])
+    const searchTimeout = useRef(null)
 
     useEffect(() => {
         async function fetchData() {
-            if(!debouncedSearch) {
+            if (!search) {
                 setData([])
                 return
             }
@@ -34,13 +24,26 @@ const SearchBooks = ({ setHidden, setRefresh }) => {
                 console.error('Error fetching books:', error)
             }
         }
-        fetchData()
-    }, [debouncedSearch])
+
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current)
+        }
+
+        searchTimeout.current = setTimeout(() => {
+            fetchData()
+        }, 2000)
+
+        return () => {
+            if (searchTimeout.current) {
+                clearTimeout(searchTimeout.current)
+            }
+        }
+    }, [search])
 
     async function handleChange(e) {
         const result = e.target.value
-        setSearch(result) 
-        if(!result) {
+        setSearch(result)
+        if (!result) {
             setSelectedBook(null)
             setIsClicked(false)
         }
@@ -66,18 +69,18 @@ const SearchBooks = ({ setHidden, setRefresh }) => {
                     {search && data ? data.map((book, index) => {
                         return (
                             <li key={index} className='book'>
-                                {book.volumeInfo.imageLinks ? 
-                                <img className='bookImg' 
-                                onClick={handleClick.bind(this, book)}
-                                src={book.volumeInfo.imageLinks.thumbnail} 
-                                alt='book cover' 
-                                /> : <p></p>}
+                                {book.volumeInfo.imageLinks ?
+                                    <img className='bookImg'
+                                        onClick={handleClick.bind(this, book)}
+                                        src={book.volumeInfo.imageLinks.thumbnail}
+                                        alt='book cover'
+                                    /> : <p></p>}
                             </li>
                         )
                     }) : <p></p>}
                 </ul>
             </div>
-            {selectedbook && <BookInfo setSelectedBook={setSelectedBook} book={selectedbook} isClicked={setIsClicked} setRefresh={setRefresh}/>}
+            {selectedbook && <BookInfo setSelectedBook={setSelectedBook} book={selectedbook} isClicked={setIsClicked} setRefresh={setRefresh} />}
         </div>
     )
 }

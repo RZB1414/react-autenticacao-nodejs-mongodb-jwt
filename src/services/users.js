@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 //const usersAPI = axios.create({ baseURL: 'http://localhost:3000' })
-const usersAPI = axios.create({ baseURL: 'https://buiatti-books-c3346d1487f9.herokuapp.com/' })
+const usersAPI = axios.create({ baseURL: 'https://midia-api-rzb1414s-projects.vercel.app' })
 
 async function login(email, password) {
     try {
