@@ -1,0 +1,31 @@
+.showvideo {
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    height: auto;
+    width: 90%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    position: relative;
+}
+
+.xIcon {
+    width: 30px;
+    height: auto;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.downloadIcon {
+    width: 30px;
+    height: auto;
+    position: absolute;
+    right: 10px;
+    top: 50px;
+}
+
+.videoInfo {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}

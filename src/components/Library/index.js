@@ -39,7 +39,6 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
             }
             const response = responseAll.filter(file => file.metadata.userId.includes(id))
             setFilesSaved(response)
-            console.log(response);
             
 
             const uniqueMarkers = [...new Set(response.map(file => file.metadata.marker))]
@@ -50,7 +49,7 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {        
         allFiles()
     }, [filesRefresh])
 
@@ -91,7 +90,7 @@ const Library = ({ setHidden, refresh, setRefresh }) => {
                         )
                     }) : <p>No books in your library</p>}
                 </ul>
-                {isClickedFiles ? <FilesLibrary filesSaved={filesSaved} handleFilesRefresh={handleFilesRefresh} allMarkers={allMarkers} /> : null}
+                {isClickedFiles ?  <FilesLibrary filesSaved={filesSaved}    handleFilesRefresh={handleFilesRefresh} allMarkers={allMarkers} /> : null}
             </div>
             {selectedBook && <BookInfoLibrary
                 selectedBook={selectedBook}

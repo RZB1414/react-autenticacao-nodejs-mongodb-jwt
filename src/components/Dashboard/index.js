@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import SearchBooks from '../SearchBooks';
 import { ReactComponent as SearchIcon } from '../../assets/icons/search-icon.svg'
 import { ReactComponent as LibraryIcon } from '../../assets/icons/library-icon.svg'
-import { ReactComponent as WishListIcon } from '../../assets/icons/wishlist-icon.svg'
+import { ReactComponent as VideosIcon } from '../../assets/icons/video-library.svg'
 import Library from '../Library';
-import WishList from '../WishList'
 import { useNavigate } from 'react-router-dom';
+import Videos from '../VideosLibrary';
 
 const Dashboard = () => {
     const id = localStorage.getItem('id')
@@ -16,7 +16,7 @@ const Dashboard = () => {
 
     const [search, setSearch] = useState(true)
     const [library, setLibrary] = useState(false)
-    const [wishlist, setWishlist] = useState(false)
+    const [videos, setVideos] = useState(false)
     const [refresh, setRefresh] = useState(false)
 
     const [dataDashboard, setDataDashboard] = useState(null)
@@ -41,17 +41,17 @@ const Dashboard = () => {
     function handleSearch() {
         setSearch(true)
         setLibrary(false)
-        setWishlist(false)
+        setVideos(false)
     }
 
     async function handleLibrary() {
         setLibrary(true)
         setSearch(false)
-        setWishlist(false)
+        setVideos(false)
     }
 
-    function handleWishlist() {
-        setWishlist(true)
+    function handleVideos() {
+        setVideos(true)
         setSearch(false)
         setLibrary(false)
     }
@@ -71,7 +71,7 @@ const Dashboard = () => {
             <div className='icons'>
                 <SearchIcon className='searchIcon' onClick={handleSearch} />
                 <LibraryIcon className='libraryIcon' onClick={handleLibrary} />
-                <WishListIcon className='wishListIcon' onClick={handleWishlist} />
+                <VideosIcon className='wishListIcon' onClick={handleVideos} />
             </div>
             <div className='dashboard'>
                 <p>Welcome to your personal library</p>
@@ -79,7 +79,7 @@ const Dashboard = () => {
 
             <SearchBooks setHidden={search} setRefresh={handleRefresh}/>
             <Library setHidden={library} refresh={refresh} setRefresh={handleRefresh}/>
-            <WishList setHidden={wishlist}/>
+            <Videos setHidden={videos}/>
         </>
 
     );
