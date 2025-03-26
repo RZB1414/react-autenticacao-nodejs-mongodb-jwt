@@ -1,7 +1,9 @@
 import axios from "axios"
+import config from "../connection.js"
 
 //const booksAPI = axios.create({ baseURL: 'http://localhost:3000/' })
-const booksAPI = axios.create({ baseURL: 'https://midia-api-rzb1414s-projects.vercel.app' })
+//const booksAPI = axios.create({ baseURL: 'https://midia-api-rzb1414s-projects.vercel.app' })
+const booksAPI = axios.create({ baseURL: `${config}` })
 
 
 async function getBooks() {

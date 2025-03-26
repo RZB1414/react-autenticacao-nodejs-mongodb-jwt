@@ -22,30 +22,32 @@ const VideosLibrary = ({ setHidden }) => {
     const [videosSaved, setVideosSaved] = useState([])
     const [allVideoMarkers, setAllVideoMarkers] = useState([])
     const [addingNewVideo, setAddingNewVideo] = useState(false)
+    const [deletingVideo, setDeletingVideo] = useState(false)
+    const [downloadProgress, setDownloadProgress] = useState(0)
 
     async function allVideos() {
         try {
             const responseAll = await getAllVideos()
-            if (!Array.isArray(responseAll) || responseAll.length === 0 ) {
+            if (!Array.isArray(responseAll) || responseAll.length === 0) {
                 console.log('No videos saved');
                 return
             }
             const response = responseAll.filter(file => file.metadata.userId.includes(id))
-            setVideosSaved(response)            
+            setVideosSaved(response)
 
             const uniqueVideoMarkers = [...new Set(response.map(file => file.metadata.marker))]
-            setAllVideoMarkers(uniqueVideoMarkers)
-            
+            setAllVideoMarkers(uniqueVideoMarkers)           
+
         } catch (error) {
             console.error(`Erro servidor => ${error.response ? error.response.data : error.message}`)
             throw error
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {        
         allVideos()
-    }, [addingNewVideo])
-    
+    }, [addingNewVideo, deletingVideo])
+
 
     const id = localStorage.getItem('id')
 
@@ -123,11 +125,13 @@ const VideosLibrary = ({ setHidden }) => {
         formData.append('videoName', videoName)
         formData.append('description', description)
         formData.append('marker', marker)
-        formData.append('userId', id)    
+        formData.append('userId', id)
 
         try {
             setUploadStatus('Uploading file')
-            await uploadVideo(formData)
+            await uploadVideo(formData, (progress) => {
+                setDownloadProgress(progress)
+            })
             setUploadStatus('File uploaded')
             setAddingNewVideo(!addingNewVideo)
             setTimeout(() => {
@@ -135,113 +139,120 @@ const VideosLibrary = ({ setHidden }) => {
             }, 2000)
         }
         catch (error) {
-            console.error('Upload Error: ', error)
-            setUploadStatus('Error uploading file.')
+            const errorMessage = error.response?.data?.msg || error.response?.data || 'Error uploading file.';
+            console.error('Upload Error:', errorMessage);
+            setUploadStatus(errorMessage);
         }
     }
 
     return (
         <>
             <div className={setHidden ? 'library' : 'none'}>
-            <div className={isVideoClicked ? 'none' : 'filesLibrary'}>
-                <div className='filesLibrary-header'>
-                    <h1 className='filesLibrary-title'>Videos</h1>
-                    <AddIcon className='filesLibrary-addIcon' onClick={handleAddFile} />
+                <div className={isVideoClicked ? 'none' : 'filesLibrary'}>
+                    <div className='filesLibrary-header'>
+                        <h1 className='filesLibrary-title'>Videos</h1>
+                        <AddIcon className='filesLibrary-addIcon' onClick={handleAddFile} />
 
-                </div>
+                    </div>
 
-                <div className={isAddingFile ? 'is-adding' : 'none'}>
-                    <CloseIcon className='filesLibrary-closeIcon' onClick={handleCloseIcon} />
-                    <input type='text'
-                        className='filesLibrary-nameFile'
-                        placeholder='Name of the file'
-                        value={videoName}
-                        onChange={handleNameChange}
-                    />
-                    <input type='text'
-                        className='filesLibrary-nameFile'
-                        placeholder='Description'
-                        value={description}
-                        onChange={handleDescriptionChange}
-                    />
-                    <select
-                    className='filesLibrary-selectMarker'
-                    value={marker}
-                    onChange={handleSelectMarkerChange}
-                    >
-                        <option 
-                        className='optionBox'
-                        value=''>Select a marker</option>
-                        {allVideoMarkers && allVideoMarkers.map((markerItem, index) => (
-                            <option 
-                            className='optionBox-item'
-                            key={index} 
-                            value={markerItem}>
-                                {markerItem}
-                            </option>
-                        ))}
-                        <option value='new'>Create new marker</option>
-                    </select>
-                    {isCreatingNewMarker &&
-                    <input type='text'
-                        className='filesLibrary-markerFile'
-                        placeholder='New Marker'
-                        value={marker}
-                        onChange={handleMarkerChange}
-                    />
-                    }
-                    <label htmlFor='file-upload' className='filesLibrary-label'>
-                        <UploadIcon className='filesLibrary-uploadIcon' onClick={handleAddFile} />
-                    </label>
-                    <p>{selectedFile ? selectedFile.name : ''}</p>
-                    <input
-                        id='file-upload'
-                        type='file'
-                        onChange={handleFileChange}
-                        style={{ display: 'none' }}
-                    />
-
-                    <p className='fileupload-status'>{uploadStatus}</p>
-                    {uploadStatus === 'Uploading file'
-                        ? <div className="loader" style={{ marginTop: '20px' }}></div>
-                        : <button className={uploadStatus === 'File uploaded' ? 'none' : 'filesLibrary-button'}
-                            onClick={handleUpload}
-                        >Upload</button>}
-                </div>
-
-                <div className={isMarkerClicked ? 'none' : 'showmarkers'}>
-                    <ul className='showmarkers-list'>
-                        {allVideoMarkers && allVideoMarkers.map((metadata, index) => (
-                            <li
-                                onClick={() => handleMarkers(metadata)}
-                                key={index}
-                                className='showmarkers-list-item'>
-                                {metadata}
-                            </li>
-                        ))
+                    <div className={isAddingFile ? 'is-adding' : 'none'}>
+                        <CloseIcon className='filesLibrary-closeIcon' onClick={handleCloseIcon} />
+                        <input type='text'
+                            className='filesLibrary-nameFile'
+                            placeholder='Name of the file'
+                            value={videoName}
+                            onChange={handleNameChange}
+                        />
+                        <input type='text'
+                            className='filesLibrary-nameFile'
+                            placeholder='Description'
+                            value={description}
+                            onChange={handleDescriptionChange}
+                        />
+                        <select
+                            className='filesLibrary-selectMarker'
+                            value={marker}
+                            onChange={handleSelectMarkerChange}
+                        >
+                            <option
+                                className='optionBox'
+                                value=''>Select a marker</option>
+                            {allVideoMarkers && allVideoMarkers.map((markerItem, index) => (
+                                <option
+                                    className='optionBox-item'
+                                    key={index}
+                                    value={markerItem}>
+                                    {markerItem}
+                                </option>
+                            ))}
+                            <option value='new'>Create new marker</option>
+                        </select>
+                        {isCreatingNewMarker &&
+                            <input type='text'
+                                className='filesLibrary-markerFile'
+                                placeholder='New Marker'
+                                value={marker}
+                                onChange={handleMarkerChange}
+                            />
                         }
-                    </ul>
+                        <label htmlFor='file-upload' className='filesLibrary-label'>
+                            <UploadIcon className='filesLibrary-uploadIcon' onClick={handleAddFile} />
+                        </label>
+                        <p>{selectedFile ? selectedFile.name : ''}</p>
+                        <input
+                            id='file-upload'
+                            type='file'
+                            onChange={handleFileChange}
+                            style={{ display: 'none' }}
+                        />
+
+                        <p className='fileupload-status'>{uploadStatus}</p>
+                        {uploadStatus === 'Uploading file'
+                            ? <div>
+                                <div className="loader" style={{ margin: '20px' }}></div>
+                                <div style={{ margin: '10px' }}>
+                                    {downloadProgress}%
+                                </div>
+                            </div>
+
+                            : <button className={uploadStatus === 'File uploaded' ? 'none' : 'filesLibrary-button'}
+                                onClick={handleUpload}
+                            >Upload</button>}
+                    </div>
+
+                    <div className={isMarkerClicked ? 'none' : 'showmarkers'}>
+                        <ul className='showmarkers-list'>
+                            {allVideoMarkers && allVideoMarkers.map((metadata, index) => (
+                                <li
+                                    onClick={() => handleMarkers(metadata)}
+                                    key={index}
+                                    className='showmarkers-list-item'>
+                                    {metadata}
+                                </li>
+                            ))
+                            }
+                        </ul>
+                    </div>
+
+                    <div className={isMarkerClicked ? 'showfiles' : 'none'}>
+                        <CloseMarkerIcon className='filesLibrary-markerCloseIcon' onClick={handleMarkerCloseIcon} />
+                        <ul className='showfiles-list'>
+                            {videosSaved && videosSaved.filter(file => file.metadata.marker === marker).map((file, index) => (
+                                <li
+                                    key={index}
+                                    className='showfiles-list-item'
+                                    onClick={() => handleVideoClicked(file)}>
+                                    {file.filename}
+                                </li>
+                            ))
+                            }
+                        </ul>
+                    </div>
+
                 </div>
 
-                <div className={isMarkerClicked ? 'showfiles' : 'none'}>
-                    <CloseMarkerIcon className='filesLibrary-markerCloseIcon' onClick={handleMarkerCloseIcon} />
-                    <ul className='showfiles-list'>
-                        {videosSaved && videosSaved.filter(file => file.metadata.marker === marker).map((file, index) => (
-                            <li
-                                key={index}
-                                className='showfiles-list-item'
-                                onClick={() => handleVideoClicked(file)}>
-                                {file.filename}
-                            </li>
-                        ))
-                        }
-                    </ul>
-                </div>
-
-            </div>
-
-            {isVideoClicked ? 
-            <ShowVideo selectedVideo={selectedVideo} isVideoClicked={isVideoClicked} setIsVideoClicked={setIsVideoClicked} /> : null}
+                {isVideoClicked ?
+                    <ShowVideo selectedVideo={selectedVideo} isVideoClicked={isVideoClicked} setIsVideoClicked={setIsVideoClicked} setDeletingVideo={setDeletingVideo} deletingVideo={deletingVideo} /> : null}
 
             </div>
         </>
