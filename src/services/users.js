@@ -7,7 +7,12 @@ const usersAPI = axios.create({ baseURL: `${config}` })
 
 async function login(email, password) {
     try {
-        const response = await usersAPI.post('/auth/login', { email, password })
+        const response = await usersAPI.post('/auth/login', { email, password }, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
         return response.data
     } catch (error) {
         console.error(`Erro servidor => ${error.response ? error.response.data : error.message}`)
