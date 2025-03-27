@@ -22,21 +22,21 @@ const Dashboard = () => {
     const [dataDashboard, setDataDashboard] = useState(null)
     const [dataUser, setDataUser] = useState(null)
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const resultDashboard = await dashboard(id);
-    //             setDataDashboard(resultDashboard)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resultDashboard = await dashboard(id);
+                setDataDashboard(resultDashboard)
 
-    //             const resultUser = await getUser(id)
-    //             const userFound = resultUser.userFound.name
-    //             setDataUser(userFound)
-    //         } catch (error) {
-    //             console.error('Error fetching dashboard data:', error)
-    //         }
-    //     }
-    //     fetchData()
-    // }, [id]);
+                const resultUser = await getUser(id)
+                const userFound = resultUser.userFound.name
+                setDataUser(userFound)
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error)
+            }
+        }
+        fetchData()
+    }, [id]);
 
     function handleSearch() {
         setSearch(true)
